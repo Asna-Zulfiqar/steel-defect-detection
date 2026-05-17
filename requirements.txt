@@ -1,0 +1,24 @@
+# Core ML
+torch>=2.3.1
+torchvision>=0.18.1
+ultralytics>=8.2.0
+
+# Data handling
+opencv-python>=4.9.0
+albumentations>=1.4.0
+numpy>=1.26
+pandas>=2.0
+Pillow>=10.3
+scikit-learn>=1.5
+pycocotools>=2.0.7
+
+# Dataset download
+kaggle>=1.6.12
+
+# App interface
+streamlit>=1.35
+plotly>=5.22
+
+# Utilities
+tqdm>=4.66
+python-dotenv>=1.0
