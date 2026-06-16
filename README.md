@@ -1,6 +1,6 @@
 # Steel Defect Detection System
 
-Steel surface defect detection using YOLOv8 fine-tuned on the NEU Steel Surface Defect dataset. Run inference via image upload or live webcam in a Streamlit interface.
+Steel surface defect detection using YOLOv8 fine-tuned on the NEU Steel Surface Defect dataset. Run inference via image upload in a Streamlit interface.
 
 ## Detected Defect Classes
 
@@ -17,9 +17,29 @@ Steel surface defect detection using YOLOv8 fine-tuned on the NEU Steel Surface 
 
 ### 1. Set up environment
 
+Create and activate a virtualenv. Examples:
+
+- macOS / Linux
+
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+- Windows (PowerShell)
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+- Windows (cmd)
+
+```cmd
+python -m venv .venv
+.venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
@@ -53,6 +73,12 @@ Model sizes: `yolov8n` (fastest) → `yolov8s` (balanced) → `yolov8m` (most ac
 
 Trained weights are saved to `models/best.pt`.
 
+If you already have trained weights stored under `runs/.../weights/best.pt` (for example after training), run this helper to copy them to the canonical location expected by the app and CLI:
+
+```bash
+python scripts/sync_weights.py
+```
+
 ### 5. Evaluate
 
 ```bash
@@ -67,7 +93,7 @@ Prints mAP@0.5, mAP@0.5:0.95, precision, and recall on the test split.
 streamlit run app/main.py
 ```
 
-Opens in your browser. Use the **Image Upload** tab to test images or the **Live Camera** tab for real-time detection.
+Opens in your browser. Use the **Image Upload** tab to test images.
 
 ## Project Structure
 

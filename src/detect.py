@@ -5,19 +5,20 @@ Usage:
     python src/detect.py --image path/to/image.jpg --weights models/best.pt --conf 0.25
 """
 
-import argparse
+import sys
 from pathlib import Path
 
+# Add repo root to sys.path so 'src' can be imported
+repo_root = Path(__file__).parent.parent
+sys.path.insert(0, str(repo_root))
 
-CLASS_NAMES = [
-    "crazing", "inclusion", "patches",
-    "pitted_surface", "rolled-in_scale", "scratches",
-]
+import argparse
+from src.common import CLASS_NAMES, DEFAULT_WEIGHTS
 
 
 def detect(
     image_path: str,
-    weights: str = "models/best.pt",
+    weights: str = DEFAULT_WEIGHTS,
     conf: float = 0.25,
     iou: float = 0.45,
     img_size: int = 640,
@@ -66,7 +67,7 @@ def detect(
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Detect defects in a single image")
     parser.add_argument("--image", required=True, help="Path to the input image")
-    parser.add_argument("--weights", default="models/best.pt")
+    parser.add_argument("--weights", default=DEFAULT_WEIGHTS)
     parser.add_argument("--conf", type=float, default=0.25)
     parser.add_argument("--iou", type=float, default=0.45)
     parser.add_argument("--imgsz", type=int, default=640)

@@ -5,12 +5,21 @@ Usage:
     python src/evaluate.py --weights models/best.pt --split test
 """
 
-import argparse
+import sys
 from pathlib import Path
+
+# Add repo root to sys.path so 'src' can be imported
+repo_root = Path(__file__).parent.parent
+sys.path.insert(0, str(repo_root))
+
+import argparse
+
+# Shared constants
+from src.common import CLASS_NAMES, DEFAULT_WEIGHTS
 
 
 def evaluate(
-    weights: str = "models/best.pt",
+    weights: str = DEFAULT_WEIGHTS,
     data_cfg: str = "configs/neu_det.yaml",
     img_size: int = 640,
     split: str = "test",
@@ -36,11 +45,6 @@ def evaluate(
         verbose=False,
     )
 
-    class_names = [
-        "crazing", "inclusion", "patches",
-        "pitted_surface", "rolled-in_scale", "scratches",
-    ]
-
     print("\n" + "=" * 50)
     print("  EVALUATION RESULTS")
     print("=" * 50)
@@ -50,7 +54,7 @@ def evaluate(
     print(f"  Recall        : {metrics.box.mr:.4f}")
 
     print("\n  Per-class AP@0.5:")
-    for i, name in enumerate(class_names):
+    for i, name in enumerate(CLASS_NAMES):
         ap = metrics.box.ap50[i] if i < len(metrics.box.ap50) else float("nan")
         print(f"    {name:<20s}: {ap:.4f}")
     print("=" * 50)
@@ -58,7 +62,7 @@ def evaluate(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Evaluate trained model on NEU-DET")
-    parser.add_argument("--weights", default="models/best.pt")
+    parser.add_argument("--weights", default=DEFAULT_WEIGHTS)
     parser.add_argument("--data", default="configs/neu_det.yaml")
     parser.add_argument("--imgsz", type=int, default=640)
     parser.add_argument("--split", default="test", choices=["train", "val", "test"])

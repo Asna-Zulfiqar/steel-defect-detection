@@ -14,21 +14,20 @@ Output:
         labels/{train,val,test}/
 """
 
+import sys
+from pathlib import Path
+
+# Add repo root to sys.path so 'src' can be imported
+repo_root = Path(__file__).parent.parent
+sys.path.insert(0, str(repo_root))
+
 import argparse
 import random
 import shutil
 import xml.etree.ElementTree as ET
-from pathlib import Path
 
-CLASS_NAMES = [
-    "crazing",
-    "inclusion",
-    "patches",
-    "pitted_surface",
-    "rolled-in_scale",
-    "scratches",
-]
-CLASS_MAP = {name: idx for idx, name in enumerate(CLASS_NAMES)}
+# Shared constants
+from src.common import CLASS_MAP
 
 SPLIT_RATIOS = (0.70, 0.15, 0.15)
 SEED = 42

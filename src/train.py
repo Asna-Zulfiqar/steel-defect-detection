@@ -20,6 +20,10 @@ import sys
 import types
 from pathlib import Path
 
+# Add repo root to sys.path so 'src' can be imported
+repo_root = Path(__file__).parent.parent
+sys.path.insert(0, str(repo_root))
+
 
 def ensure_torchvision_stub() -> None:
     """Provide a minimal torchvision stub when the local Python build lacks _bz2.
@@ -49,6 +53,8 @@ def train(
 ) -> Path:
     ensure_torchvision_stub()
     from ultralytics import YOLO
+    # shared constants
+    from src.common import DEFAULT_WEIGHTS
 
     processed_dir = Path("data/processed/neu_det")
     if not processed_dir.exists():
@@ -82,9 +88,8 @@ def train(
     )
 
     best_weights = Path(results.save_dir) / "weights" / "best.pt"
-    models_dir = Path("models")
-    models_dir.mkdir(exist_ok=True)
-    dest = models_dir / "best.pt"
+    dest = Path(DEFAULT_WEIGHTS)
+    dest.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy(best_weights, dest)
 
     map50 = results.results_dict.get("metrics/mAP50(B)", 0.0)
